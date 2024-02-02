@@ -2,7 +2,7 @@
 
 A simple RSI technical indicator example programmed in Python.
 
-This program was based on an old video tutorial on YouTube that needed to be fixed. I fixed the errors, including some additional features, and it now works.
+This program was based on an old video tutorial on YouTube by @NeuralNine that needed to be updated to work. Full credit to @NeuralNine for the orginal video and code. I simply fixed the errors, including some additional features, and it now works.
 
 Features added include:
 * Allow the user to input a ticker symbol of their choice.
