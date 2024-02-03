@@ -140,7 +140,7 @@ plt.figure(figsize=(12, 8))
 # Define axis 1
 ax1 = plt.subplot(211)
 ax1.plot(combined.index, combined["Adj Close"], color="lightgray")
-ax1.set_title("Adjusted Close Price", color="white")
+ax1.set_title(f"{ticker} - Adjusted Close Price", color="white")
 
 ax1.grid(True, color="#555555")
 ax1.set_axisbelow(True)
@@ -162,7 +162,7 @@ ax2.axhline(80, linestyle="--", alpha=0.5, color="#00ff00")
 ax2.axhline(90, linestyle="--", alpha=0.5, color="#ffaa00")
 ax2.axhline(100, linestyle="--", alpha=0.5, color="#ff0000")
 
-ax2.set_title("RSI Value", color="white")
+ax2.set_title(f"{ticker} - RSI Indicator", color="white")
 ax2.grid(False)
 ax2.set_axisbelow(True)
 ax2.set_facecolor("black")
