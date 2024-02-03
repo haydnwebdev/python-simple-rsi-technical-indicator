@@ -3,12 +3,29 @@ from pandas_datareader import data as web
 import matplotlib.pyplot as plt
 import datetime as dt
 import yfinance as yf
+import warnings
+import os
+
+# Turn off deprecated warnings
+warnings.filterwarnings("ignore")
 
 
-# initialise ticker
+def clear_screen():
+    """
+    Clear the console on Windows, Mac and Linux.
+    """
+    if os.name == "nt":
+        os.system("cls")
+    else:
+        os.system("clear")
+
+
+clear_screen()
+
+# Initialise ticker
 ticker = ""
 
-# check if we have a ticker, convert to uppercase
+# Check if we have a ticker, convert to uppercase
 while not ticker:
     ticker = (
         input("Enter a YF ticker symbol ticker symbol (e.g BBSN.L) 'q' to quit : ")
@@ -16,7 +33,7 @@ while not ticker:
         .strip()
     )
 
-    # allow user to quit program
+    # Allow user to quit program
     if ticker.lower() == "q":
         print("Exiting the program.")
         exit(0)
@@ -70,30 +87,30 @@ def get_time_period():
             print("Invalid input. Please choose one of the available time periods.")
 
 
-# setting the bounds
+# Setting the bounds
 lower_bound_date = dt.datetime(1970, 1, 1)
 current_date = dt.datetime.now()
 
-# assign the start date
+# Sssign the start date
 start_date = get_date(
     "Enter the start date in YYYY-MM-DD format : ", lower_bound_date, current_date
 )
 
-# assign the end date
+# Assign the end date
 end_date = get_date(
     "Enter the end date in YYYY-MM-DD format : ", start_date, current_date
 )
 
-# assign the interval period
+# Assign the interval period
 interval_period = get_time_period()
 
-# replace broken yahoo-finance from pandas
+# Replace broken yahoo-finance from pandas
 yf.pdr_override()
 
 # retrieve data from yf
 data = web.DataReader(ticker, start=start_date, end=end_date, interval=interval_period)
 
-# the difference or change in values across intervals. 
+# The difference or change in values across intervals.
 delta = data["Adj Close"].diff(1)
 delta.dropna(inplace=True)
 
@@ -108,7 +125,7 @@ days = 14
 average_gain = positive.rolling(window=days).mean()
 average_loss = abs(negative.rolling(window=days).mean())
 
-# perform rsi calc
+# Perform rsi calc
 relative_strength = average_gain / average_loss
 RSI = 100.0 - (100.0 / (1.0 + relative_strength))
 
@@ -117,10 +134,10 @@ combined = pd.DataFrame()
 combined["Adj Close"] = data["Adj Close"]
 combined["RSI"] = RSI
 
-# define figure size
+# Define figure size
 plt.figure(figsize=(12, 8))
 
-# define axis 1
+# Define axis 1
 ax1 = plt.subplot(211)
 ax1.plot(combined.index, combined["Adj Close"], color="lightgray")
 ax1.set_title("Adjusted Close Price", color="white")
@@ -132,7 +149,7 @@ ax1.figure.set_facecolor("#121212")
 ax1.tick_params(axis="x", colors="white")
 ax1.tick_params(axis="y", colors="white")
 
-# define axis 2
+# Define axis 2
 ax2 = plt.subplot(212, sharex=ax1)
 ax2.plot(combined.index, combined["RSI"], color="lightgray")
 
@@ -152,5 +169,5 @@ ax2.set_facecolor("black")
 ax2.tick_params(axis="x", colors="white")
 ax2.tick_params(axis="y", colors="white")
 
-# show the graph(s)
+# Show the graph(s)
 plt.show()
